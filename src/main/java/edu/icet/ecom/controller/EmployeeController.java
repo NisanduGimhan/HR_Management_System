@@ -31,7 +31,6 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
 
-
     @PutMapping("/update/{id}")
     public ResponseEntity<Employee> update(
             @PathVariable Long id,
