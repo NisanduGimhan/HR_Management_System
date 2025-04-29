@@ -7,7 +7,7 @@ import java.util.List;
 
 public class EmployeeServiceImpl implements EmployeeService {
     @Override
-    public void save(Employee employee) {
+    public Employee save(Employee employee) {
 
     }
 
@@ -22,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void update(Employee customer) {
+    public Employee update(Long id,Employee customer) {
 
     }
 

@@ -2,7 +2,10 @@ package edu.icet.ecom.controller;
 
 import edu.icet.ecom.dto.Employee;
 import edu.icet.ecom.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,23 +20,36 @@ public class EmployeeController {
 
 
     @PostMapping("/add")
-    public void add(@RequestBody Employee employee){service.save(employee);
-        System.out.println(employee);}
-
-    @GetMapping("/search/{id}")
-    public Employee search(@PathVariable Long id){
-        return service.findById(id);
+    public ResponseEntity<Employee> add(@Valid @RequestBody Employee employee) {
+        Employee createdEmployee = service.save(employee);
+        return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id){service.deleteById(id);}
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 
-    @PutMapping("/update")
-    public void update(@RequestBody Employee customer){service.update(customer);}
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Employee> update(
+            @PathVariable Long id,
+            @Valid @RequestBody Employee employee) {
+        Employee updatedEmployee = service.update(id, employee);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @GetMapping("/search/{id}")
+    public ResponseEntity<Employee> searchEmployeeById(@PathVariable Long id) {
+        Employee employee = service.findById(id);
+        return ResponseEntity.ok(employee);
+    }
 
     @GetMapping("/get-all")
-    public List<Employee> getall(){
-
-        return service.findall();
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        List<Employee> employees = service.findall();
+        return ResponseEntity.ok(employees);
     }
+
 }
